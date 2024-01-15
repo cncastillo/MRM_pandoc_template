@@ -1,0 +1,82 @@
+#!/usr/bin/env ruby
+require 'yaml'
+require 'shellwords'
+
+# Extract the YAML frontmatter from the Markdown file
+def extract_frontmatter(file)
+  frontmatter = ''
+  in_frontmatter = false
+
+  File.open(file, 'rb').each_line do |line|
+    # Encode line to UTF-8, replacing invalid and undefined characters
+    line = line.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+    if line.strip == '---'
+      in_frontmatter = !in_frontmatter
+      next if frontmatter.empty?
+    end
+    frontmatter += line if in_frontmatter
+  end
+
+  frontmatter
+end
+
+# Identify the Markdown file among the command line arguments
+def find_markdown_file(args)
+  # This will hold the index positions of where options (-o, --output, etc.) appear
+  option_indices = args.each_index.select { |i| args[i].start_with?('-') && args[i] != '-' }
+
+  # Find the first argument that doesn't start with '-' and isn't immediately after an option
+  args.each_with_index do |arg, i|
+    if !arg.start_with?('-') && (i == 0 || (i > 0 && !args[i-1].start_with?('-')))
+      return arg
+    end
+  end
+  nil
+end
+
+def join_arguments_with_proper_quoting(args)
+  args.map do |arg|
+    # If an argument contains spaces, it needs to be quoted
+    if arg.include?(' ')
+      # Quote the argument if it contains spaces
+      "\"#{arg}\""
+    else
+      # Otherwise, return the argument as is
+      arg
+    end
+  end.join(' ')
+end
+
+# Usage in the run_pandoc function
+def run_pandoc(markdown_file, args)
+  all_args = args + [markdown_file]
+  properly_quoted_command = join_arguments_with_proper_quoting(all_args)
+
+  # Construct the Pandoc command
+  command = "pandoc #{properly_quoted_command}"
+  puts "======== Running command: #{command} ========"
+  system(command)
+end
+
+
+
+
+markdown_file = find_markdown_file(ARGV)
+if markdown_file.nil?
+  puts "No Markdown file specified."
+  exit 1
+end
+
+# Filter out the Markdown file from the list of arguments
+additional_args = ARGV.reject { |arg| arg == markdown_file }
+
+# Extract and parse the YAML frontmatter
+frontmatter = extract_frontmatter(markdown_file)
+parsed_yaml = YAML.load(frontmatter) || {}
+frontmatter_args = parsed_yaml['pandoc_args'] || []
+
+# Combine the command line arguments with those from the frontmatter
+combined_args = additional_args + frontmatter_args
+# Run Pandoc with the combined arguments
+run_pandoc(markdown_file, combined_args)
+

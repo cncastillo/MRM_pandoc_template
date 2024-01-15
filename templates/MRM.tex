@@ -1,0 +1,73 @@
+% MRM's pandoc template
+% 
+% 2024, Carlos Castillo-Passi
+%
+% Hope this makes your life easier. 
+% Feel free to modify, share, sell it,
+% or whatever you want with it.
+\documentclass[AMA,STIX2COL,Linenumberson]{MRM}
+
+\articletype{RESEARCH ARTICLE}%
+\received{day Month, year}
+\revised{day Month, year}
+\accepted{day Month, year}
+\topskip=0pt
+\raggedbottom
+
+\usepackage{silence}
+\WarningFilter{latex}{Unused global option(s)}
+
+\begin{document}
+
+\title{$title$$if(title-thanks)$\protect\thanks{$title-thanks$}$endif$}
+
+$for(author)$
+\author[$for(author.institute)$$author.institute$$sep$,$endfor$]{$author.name$}{$if(author.orcid)$\orcid{$author.orcid$}$endif$}
+$endfor$
+
+\authormark{\MakeUppercase{$firstauthor.name$} \textsc{et al}}
+
+$for(institute)$
+\address[$institute.index$]{$institute.name$}
+$endfor$
+
+$if(correponding-author)$
+\corres{$correponding-author$ \email{correponding-author.email}}
+$endif$
+
+$if(present-address)$
+\presentaddress{$present-address$}
+$endif$
+
+$if(funding-info)$
+\finfo{$funding-info$}
+$endif$
+
+\abstract[]{$abstract$}
+
+\keywords{
+$for(keyword)$
+$keyword$$sep$,
+$endfor$
+}
+
+$if(wordcount)$
+\wordcount{$wordcount$}
+$endif$
+
+\jnlcitation{\cname{%
+$if(how-to-cite)$
+$how-to-cite$
+$else$
+\author{$firstauthor.name$} et al
+$endif$
+} (\cyear{2024}), 
+\ctitle{$title$}, \cjournal{Magn. Reson. Med.}, \cvol{2024;XX:XX--XX}. doi: 10.1002/mrm.XXX}
+
+\maketitle
+
+%\footnotetext{\textbf{Abbreviations:}~\hbox{ANA,~anti-nuclear~antibodies;~APC,~antigen-}{\hfill\break}presenting~cells; IRF, interferon regulatory factor}
+
+$body$
+
+\end{document}
