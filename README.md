@@ -1,5 +1,5 @@
 # MRM_pandoc_template
-This repository provides an unofficial pandoc template for the journal Magnetic Resonance in Medicine (MRM). 
+This repository provides an unofficial pandoc template for the Magnetic Resonance in Medicine (MRM) journal. It is still a work in progress 👷 so I do not ensure that everything will work.
 
 # How to use
 1. First, ensure you have installed pandoc, TeX Live, and MRM's LaTeX template.
