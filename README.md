@@ -1,9 +1,9 @@
 # MRM_pandoc_template
-This repository provides an unofficial pandoc template for the Magnetic Resonance in Medicine (MRM) journal. It is still a work in progress 👷 so I do not ensure that everything will work.
+This repository provides an unofficial pandoc template for the Magnetic Resonance in Medicine (MRM) journal. It is still a work in progress 👷 so I do not ensure everything will work.
 
 # How to use
-1. First, ensure you have installed pandoc, TeX Live, and MRM's LaTeX template.
-2. Then allow the script `panrun` to be executable (`chmod +x panrun`) as it will read parameters defined in `pandoc_args`.
+1. First, check that you have installed pandoc, TeX Live, and MRM's LaTeX template.
+2. Then allow the script `panrun` to be executable (`chmod +x panrun`) as it will read parameters defined inside `pandoc_args` in the markdown's YAML frontmatter.
 3. Finally, run the following script: 
 ```bash
 ./panrun MRM_example_document.md -o MRM_example_document.pdf
