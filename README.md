@@ -8,6 +8,8 @@ This repository provides an unofficial pandoc template for the Magnetic Resonanc
 ```bash
 ./panrun MRM_example_document.md -o MRM_example_document.pdf
 ```
+![image](https://github.com/cncastillo/MRM_pandoc_template/assets/5957134/b5a675f8-74b4-4664-b71a-d13580ce3949)
+
 For some reason, the file `Orcidlogo-eps-converted-to.pdf` needs to be in the same folder as the markdown file.
 
 # How to use with Obsidian
