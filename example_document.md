@@ -1,7 +1,7 @@
 ---
 title: This is a title
 institute:
-  - kcl: School of Biomedical Engineering and Imaging Sciences, King’s College London, London, UK
+  - kcl: School of Biomedical Engineering and Imaging Sciences, King's College London, London, UK
   - iibm: Institute for Biological and Medical Engineering, Pontificia Universidad Católica de Chile, Santiago, Chile
   - ihealth: Millennium Institute for Intelligent Healthcare Engineering (iHEALTH), Pontificia Universidad Católica de Chile, Santiago, Chile
   - siemens: MR Research Collaborations, Siemens Healthcare Limited, Camberley, United Kingdom
