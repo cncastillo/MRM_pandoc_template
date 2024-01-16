@@ -49,10 +49,14 @@ keyword:
   - MRI
   - Deep learning
   - GPU
+csl: templates/MRM.csl
+reference-section-title: References
+bibliography: MyLibrary.bib
 pandoc_args:
   - --template="templates/MRM.tex"
   - --lua-filter="filters/scholarly-metadata.lua"
   - --lua-filter="filters/abstract.lua"
+  - --citeproc
 ---
 # Abstract
 
@@ -68,4 +72,4 @@ pandoc_args:
 
 ## Section
 
-Lorem ipsum dolor sit amet, consectetur **adipiscing** elit. Suspendisse commodo, risus sit amet vestibulum sagittis, tortor erat interdum tortor, vel scelerisque justo risus non metus. Morbi suscipit ultricies magna. Maecenas nec arcu lacus. Nunc facilisis molestie dolor vel lacinia. Sed ullamcorper nec tortor non convallis. Nunc suscipit sit amet dui in laoreet. Curabitur sit amet orci varius, feugiat nisl sed, dictum urna.
+Lorem ipsum dolor sit amet, consectetur **adipiscing** elit. Suspendisse commodo, risus sit amet vestibulum sagittis, tortor erat interdum tortor, vel scelerisque justo risus non metus. Morbi suscipit ultricies magna. Maecenas nec arcu lacus. Nunc facilisis molestie dolor vel lacinia. Sed ullamcorper nec tortor non convallis. Nunc suscipit sit amet dui in laoreet. Curabitur sit amet orci varius, feugiat nisl sed, dictum urna. Citing my own paper.[@castillo-passi_komamri_2023] Yes, the cite goes after the punctation mark.
