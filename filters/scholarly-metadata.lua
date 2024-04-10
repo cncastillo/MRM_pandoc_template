@@ -193,7 +193,6 @@ return {
   {
     Meta = function(meta)
       meta.author, meta.institute = canonicalize(meta.author, meta.institute)
-      meta.firstauthor = meta.author[1]
       return meta
     end
   }

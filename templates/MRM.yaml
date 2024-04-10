@@ -1,0 +1,28 @@
+template: MRM.tex                   # Pandoc template
+csl: MRM-AMA.csl                    # Biblio style
+bibliography: MyLibrary.bib         # LaTeX refereces
+variables:
+  classoption:
+    - STIX2COL       # Errors when disabled
+    - Linenumberson  # Linenumbersoff
+    #- AMA           # When enabled with "link-citations", hello^2 => hello^2code 
+number-sections: true
+#include-in-header: ${.}/figure_config.tex
+metadata:
+  reference-section-title: References
+  link-citations: true
+  colorlinks: true
+resource-path:
+  - ${.}/../attachments/   # Images
+  - ${.}/../templates/     # MRM.csl
+  - ${.}/../               # MyLibrary.bib
+filters:
+  - ${.}/../filters/scholarly-metadata.lua
+  - ${.}/../filters/author-info-blocks.lua
+  - ${.}/../filters/abstract-section.lua
+  - ${.}/../filters/starred-figures.lua
+  - ${.}/../filters/parse-latex-tables.lua
+  - ${.}/../filters/remove-links.lua
+  - pandoc-crossref
+  - citeproc
+ 

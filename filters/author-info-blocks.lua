@@ -157,18 +157,23 @@ return {
       local mark = function (mark_name) return default_marks[mark_name] end
 
       body:extend(create_equal_contributors_block(doc.meta.author, mark) or {})
-      body:extend(create_affiliations_blocks(doc.meta.institute) or {})
+      if not FORMAT:match 'latex' then -- cncastillo, avoid block in pdf output
+        body:extend(create_affiliations_blocks(doc.meta.institute) or {})
+      end
       body:extend(create_correspondence_blocks(doc.meta.author, mark) or {})
       body:extend(doc.blocks)
-
-      -- Overwrite authors with formatted values. We use a single, formatted
-      -- string for most formats. LaTeX output, however, looks nicer if we
-      -- provide a authors as a list.
-      meta.author = FORMAT:match 'latex'
-        and pandoc.MetaList(doc.meta.author):map(author_inline_generator(mark))
-        or pandoc.MetaInlines(create_authors_inlines(doc.meta.author, mark))
-      -- Institute info is now baked into the affiliations block.
-      meta.institute = nil
+      
+      -- cncastillo, this just generate errors for pdf output
+      if not FORMAT:match 'latex' then
+        -- Overwrite authors with formatted values. We use a single, formatted
+        -- string for most formats. LaTeX output, however, looks nicer if we
+        -- provide a authors as a list.
+        meta.author = FORMAT:match 'latex'
+          and pandoc.MetaList(doc.meta.author):map(author_inline_generator(mark))
+          or pandoc.MetaInlines(create_authors_inlines(doc.meta.author, mark))
+        -- Institute info is now baked into the affiliations block.
+        meta.institute = nil
+      end
 
       return pandoc.Pandoc(body, meta)
     end

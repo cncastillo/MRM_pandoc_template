@@ -14,7 +14,6 @@ author:
         - iibm
         - ihealth
       email: cncastillo@uc.cl
-      correspondence: yes
       orcid: XXX
   - Karl Kunze:
       institute:
@@ -49,14 +48,8 @@ keyword:
   - MRI
   - Deep learning
   - GPU
-csl: templates/MRM.csl
-reference-section-title: References
-bibliography: MyLibrary.bib
 pandoc_args:
-  - --template="templates/MRM.tex"
-  - --lua-filter="filters/scholarly-metadata.lua"
-  - --lua-filter="filters/abstract.lua"
-  - --citeproc
+  - --defaults="templates/MRM.yaml"
 ---
 # Abstract
 
