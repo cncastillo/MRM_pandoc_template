@@ -10,7 +10,7 @@ This repository provides an unofficial pandoc template for the Magnetic Resonanc
 ```
 ![image](https://github.com/cncastillo/MRM_pandoc_template/assets/5957134/b5a675f8-74b4-4664-b71a-d13580ce3949)
 
-For some reason, the file `Orcidlogo-eps-converted-to.pdf` needs to be in the same folder as the markdown file.
+For some reason, the file `Orcidlogo-eps-converted-to.pdf` needs to be in the same folder as the LaTeX MRM template (`/home/USER/texmf/tex/latex/mrm/`).
 
 # How to use with Obsidian
 To use this in Obsidian, use the extension "Obsidian Enhancing Export" and change:
