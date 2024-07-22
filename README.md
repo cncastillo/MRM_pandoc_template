@@ -25,5 +25,5 @@ and change the parameters for the PDF export if needed (add a `--resource-path` 
 
 ![image](https://github.com/cncastillo/MRM_pandoc_template/assets/5957134/b701525b-528b-4645-913a-f61c8b1b2a5e)
 
-
+To use the file name as the document's title, add `-M title="${currentFileName}"` to Export Settings/Extra arguments.
 
