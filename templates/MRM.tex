@@ -36,8 +36,8 @@ $endif$
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
-% Fixes orcid logo
-% JUST PUT Orcidlogo-eps-converted-to.pdf into /home/USER/texmf/tex/latex/mrm/
+$-- % Fixes orcid logo
+$-- % JUST PUT Orcidlogo-eps-converted-to.pdf into /home/USER/texmf/tex/latex/mrm/
 
 % Font encoding
 \usepackage{iftex}
@@ -109,7 +109,7 @@ singlelinecheck=false,
 position=top
 }
 
-% Fixing MRM's caption spacing mess ()
+% Fixing MRM's caption spacing mess
 \makeatletter
 \long\def\@makecaption#1#2{%
       \vskip\abovecaptionskip%
@@ -118,36 +118,6 @@ position=top
         \vskip\abovecaptionskip
 }
 \makeatother
-
-% Fixes tables, after spending a lot of time, this does not work
-% Based on https://github.com/jgm/pandoc/issues/1023#issuecomment-1958284710
-%\makeatletter
-%\@ifclasswith{MRM}{STIX2COL}{
-%    \newlength{\twocolumnlinewidth}             % cncastillo
-%    \let\oldlt\longtable
-%    \let\endoldlt\endlongtable
-%    \def\longtable{\@ifnextchar[\longtable@i \longtable@ii}
-%    \def\longtable@i[#1]{
-%        \begin{figure}[hbt] %<- this can generate missed cross-refs
-%        \setlength{\twocolumnlinewidth}{\linewidth} % cncastillo
-%        \onecolumn
-%        \begin{minipage}{\twocolumnlinewidth} % cncastillo
-%        \oldlt[#1]
-%    }
-%    \def\longtable@ii{
-%        \begin{figure}[hbt] %<- this can generate missed cross-refs
-%        \onecolumn
-%        \begin{minipage}{\twocolumnlinewidth} % cncastillo
-%        \oldlt
-%    }
-%    \def\endlongtable{
-%        \endoldlt
-%        \end{minipage}
-%        \twocolumn
-%        \end{figure} %<- this can generate missed cross-refs
-%    }
-%}{}
-%\makeatother
 $endif$
 
 % Code listings
@@ -168,19 +138,18 @@ $endif$
 $if(graphics)$
 \usepackage{graphicx}
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 
-% Set default figure placement to htbp
-%\makeatletter
-%\usepackage{float}
-%\def\fps@figure{H}
-%\makeatother
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+\makeatother
 $endif$
 
 $if(svg)$
@@ -364,10 +333,21 @@ $endfor$
 \WarningFilter{latex}{Unused global option(s)}
 \WarningFilter{latex}{Optional argument}
 \WarningFilter{latex}{Text page 1 contains only floats}
-\WarningFilter{latex}{There were undefined references}
-\WarningFilter{latex}{Reference}
+$-- %\WarningFilter{latex}{There were undefined references}
+$-- %\WarningFilter{latex}{Reference}
 
-% Document config
+% Fixing funding info size
+\makeatletter
+\def\fundinginfohead#1{\gdef\@fundinginfo@head{#1}}\fundinginfohead{\rmfamily\fontsize{8}{11}\selectfont\textbf{Funding Information}}%
+\makeatother
+%%%%%%%%%%%%%%%%%%%% MARGIN NOTES %%%%%%%%%%%%%%%%%%%%
+\usepackage{marginnote}
+\setlength{\marginparsep}{0.2cm}
+\setlength{\marginparwidth}{1cm}
+\newcommand{\note}[2]{{\color{red}#1}\marginnote{\color{red}\textbf#2}}
+%%%%%%%%%%%%%%%%%%%% DOCUMENT %%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
 % Generates the title of the document using the `title` variable in the frontmatter
 \title{$title$$if(title-thanks)$\protect\thanks{$title-thanks$}$endif$}
 % This iterate over the authors in `author`. Each one can have a list in `insitute` and an `orcid`
@@ -394,17 +374,15 @@ $if(present-address)$
 $endif$
 % Defines the author's funding information with the info in `funding-info`
 $if(funding-info)$
-\finfo{$funding-info$}
+% Wordcount defined in `wordcount`
+\finfo{$funding-info$$if(wordcount)$\\\\\textbf{Word Count:} $wordcount$$endif$\vspace{-3em}}
 $endif$
 % The variable abstract can be defined directly `abstract` or use the provided `abtract.lua` filter to
 % get the information from the section "# Abstract" of the text
-\abstract[]{\vspace{-.5em}$abstract$}
+\setlength{\adjtitleskip}{0pt} % So the abstract does not create a new blank page
+\abstract[]{\vspace{-1em}$abstract$\vspace{-1em}}
 % Keywords defined in `keyword`
-\keywords{$for(keyword)$$keyword$$sep$, $endfor$\vspace{-1.5em}}
-% Wordcount defined in `wordcount`
-$if(wordcount)$
-\wordcount{$wordcount$}
-$endif$
+\keywords{$for(keyword)$$keyword$$sep$, $endfor$\vspace{-3em}}
 % Box at the end of the document on how to cite the paper
 % can be constumized using `how-to-cite`
 \jnlcitation{\cname{%
@@ -417,13 +395,6 @@ $endfor$
 $endif$
 } (\cyear{2024}), 
 \ctitle{$title$}, \cjournal{Magn. Reson. Med.}, \cvol{2024;XX:XX--XX}. doi: 10.1002/mrm.XXX}
-% Abbreviations defined in `abbreviations`, to be implemented
-$if(abbreviations)$
-\footnotetext{\textbf{Abbreviations:}$abbreviations$}
-$endif$
-
-%%%%%%%%%%%%%%%%%%%% DOCUMENT %%%%%%%%%%%%%%%%%%%%
-\begin{document}
 
 % Title page
 $if(has-frontmatter)$
@@ -431,6 +402,11 @@ $if(has-frontmatter)$
 $endif$
 $if(title)$
 \maketitle
+\clearpage
+$endif$
+% Abbreviations defined in `abbreviations`, to be implemented
+$if(abbreviations)$
+\footnotetext{\textbf{Abbreviations:}$abbreviations$}
 $endif$
 
 % Additional stuff before body
